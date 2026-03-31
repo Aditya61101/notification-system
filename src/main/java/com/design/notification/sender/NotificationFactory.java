@@ -11,7 +11,6 @@ public class NotificationFactory {
             case EMAIL -> new EmailStrategy();
             case SMS -> new SMSStrategy();
             case PUSH -> new PushStrategy();
-            default -> throw new IllegalArgumentException("Strategy not supported");
         };
     }
 }
