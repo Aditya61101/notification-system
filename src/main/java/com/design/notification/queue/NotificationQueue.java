@@ -2,19 +2,38 @@ package com.design.notification.queue;
 
 import com.design.notification.models.Notification;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.DelayQueue;
 
 public class NotificationQueue {
-    private final BlockingQueue<Notification> queue = new LinkedBlockingQueue<>();
+    private final DelayQueue<Notification> queue = new DelayQueue<>();
+    private static final int MAX_SIZE = 10000;
 
     public void add(Notification n) {
-        // When using a capacity-restricted queue,
-        // this method is generally preferable to add,
-        // allowing for graceful handling via a boolean return value.
+        if(queue.size() >= MAX_SIZE) {
+            System.out.println("Queue full. Dropping notification");
+            return;
+        }
         queue.offer(n);
     }
+
     public Notification take() throws InterruptedException {
         return queue.take();
     }
 }
+
+//import java.util.concurrent.BlockingQueue;
+//import java.util.concurrent.LinkedBlockingQueue;
+//
+//public class NotificationQueue {
+//    private final BlockingQueue<Notification> queue = new LinkedBlockingQueue<>();
+//
+//    public void add(Notification n) {
+//        // When using a capacity-restricted queue,
+//        // this method is generally preferable to add,
+//        // allowing for graceful handling via a boolean return value.
+//        queue.offer(n);
+//    }
+//    public Notification take() throws InterruptedException {
+//        return queue.take();
+//    }
+//}
