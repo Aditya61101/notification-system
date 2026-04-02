@@ -1,6 +1,5 @@
 package com.design.notification.ratelimiters;
 
-import com.design.notification.enums.NotificationType;
 import com.design.notification.enums.RateLimiterEnum;
 import com.design.notification.ratelimiters.configs.FixedWindowConfig;
 import com.design.notification.ratelimiters.configs.TokenBucketConfig;

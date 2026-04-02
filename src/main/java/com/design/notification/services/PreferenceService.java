@@ -1,7 +1,6 @@
 package com.design.notification.services;
 
 import com.design.notification.enums.Channel;
-import com.design.notification.enums.NotificationType;
 import com.design.notification.models.Notification;
 import com.design.notification.models.UserPreference;
 
