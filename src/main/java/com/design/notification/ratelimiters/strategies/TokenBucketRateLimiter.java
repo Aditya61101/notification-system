@@ -1,6 +1,8 @@
-package com.design.notification.ratelimiters;
+package com.design.notification.ratelimiters.strategies;
 
-public class TokenBucketRateLimiter {
+import com.design.notification.ratelimiters.RateLimiterStrategy;
+
+public class TokenBucketRateLimiter implements RateLimiterStrategy {
     private final int capacity;
     private final int refillRate; // tokens per second
     private int tokens;
@@ -15,6 +17,7 @@ public class TokenBucketRateLimiter {
         this.lastRefillTime = System.currentTimeMillis();
     }
 
+    @Override
     public synchronized boolean allowRequest() {
         refill();
         if(tokens > 0) {
@@ -33,5 +36,9 @@ public class TokenBucketRateLimiter {
             tokens = Math.min(capacity, tokens+tokensToAdd);
             lastRefillTime = now;
         }
+    }
+
+    public static interface RateLimiterStrategy {
+        boolean allowRequest();
     }
 }

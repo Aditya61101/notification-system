@@ -2,8 +2,13 @@ package com.design.notification;
 
 import com.design.notification.models.Channel;
 import com.design.notification.models.Notification;
+import com.design.notification.models.RateLimiterEnum;
 import com.design.notification.queue.DeadLetterQueue;
 import com.design.notification.queue.NotificationQueue;
+import com.design.notification.ratelimiters.RateLimiterConfig;
+import com.design.notification.ratelimiters.RateLimiterFactory;
+import com.design.notification.ratelimiters.RateLimiterStrategy;
+import com.design.notification.ratelimiters.configs.TokenBucketConfig;
 import com.design.notification.workers.DeadNotificationWorker;
 import com.design.notification.workers.NotificationWorker;
 
@@ -14,7 +19,10 @@ public class Main {
         NotificationQueue queue = new NotificationQueue();
         DeadLetterQueue deadLetterQueue = new DeadLetterQueue();
 
-        Thread workerThread = new Thread(new NotificationWorker(queue, deadLetterQueue));
+        RateLimiterConfig config = new TokenBucketConfig(5,5);
+        RateLimiterStrategy limiter = RateLimiterFactory.getStrategy(RateLimiterEnum.TOKEN_BUCKET, config);
+
+        Thread workerThread = new Thread(new NotificationWorker(queue, deadLetterQueue, limiter));
         Thread deadQueueThread = new Thread(new DeadNotificationWorker(deadLetterQueue));
 
         workerThread.start();
