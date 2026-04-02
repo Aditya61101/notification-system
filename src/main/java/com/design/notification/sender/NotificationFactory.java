@@ -1,6 +1,6 @@
 package com.design.notification.sender;
 
-import com.design.notification.models.Channel;
+import com.design.notification.enums.Channel;
 import com.design.notification.sender.strategies.EmailStrategy;
 import com.design.notification.sender.strategies.PushStrategy;
 import com.design.notification.sender.strategies.SMSStrategy;

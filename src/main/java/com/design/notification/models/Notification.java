@@ -1,5 +1,8 @@
 package com.design.notification.models;
 
+import com.design.notification.enums.Channel;
+import com.design.notification.enums.NotificationType;
+
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
@@ -8,6 +11,7 @@ public class Notification implements Delayed {
     public String userId;
     public String message;
     public Channel channel;
+    public NotificationType type;
     public int retryCount = 0;
     public static final int MAX_RETRIES = 3;
 

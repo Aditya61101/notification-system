@@ -1,4 +1,4 @@
-package com.design.notification.models;
+package com.design.notification.enums;
 
 public enum Channel {
     EMAIL,
