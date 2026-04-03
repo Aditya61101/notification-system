@@ -17,11 +17,10 @@ import com.design.notification.queue.DeadLetterQueue;
 import com.design.notification.queue.NotificationQueue;
 // rate limiters
 import com.design.notification.ratelimiters.RateLimiterConfig;
-import com.design.notification.ratelimiters.RateLimiterFactory;
-import com.design.notification.ratelimiters.RateLimiterStrategy;
 import com.design.notification.ratelimiters.configs.TokenBucketConfig;
 // services
 import com.design.notification.services.PreferenceService;
+import com.design.notification.services.RateLimiterService;
 // workers
 import com.design.notification.workers.DeadNotificationWorker;
 import com.design.notification.workers.NotificationWorker;
@@ -38,7 +37,7 @@ public class Main {
         DeadLetterQueue deadLetterQueue = new DeadLetterQueue();
 
         RateLimiterConfig config = new TokenBucketConfig(5,5);
-        RateLimiterStrategy limiter = RateLimiterFactory.getStrategy(RateLimiterEnum.TOKEN_BUCKET, config);
+        RateLimiterService rateLimiterService = new RateLimiterService(RateLimiterEnum.TOKEN_BUCKET, config);
 
         PreferenceService preferenceService = new PreferenceService();
         for(int i=0;i<=50;i++) {
@@ -50,7 +49,7 @@ public class Main {
 
         NotificationHandler pipeline = new ValidationHandler().setNext(
                 new PreferenceHandler(preferenceService).setNext(
-                        new RateLimiterHandler(limiter).setNext(
+                        new RateLimiterHandler(rateLimiterService).setNext(
                                 new SendNotificationHandler()
                         )
                 )
